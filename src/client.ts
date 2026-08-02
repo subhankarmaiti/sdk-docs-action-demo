@@ -1,5 +1,4 @@
 import { WidgetsResource } from './widgets.js';
-import { WebhooksResource } from './webhooks.js';
 
 /** How failed requests are retried. */
 export interface RetryOptions {
@@ -53,13 +52,6 @@ export class DemoClient {
   /** Operations on widgets. See {@link WidgetsResource}. */
   readonly widgets: WidgetsResource;
 
-  /**
-   * Webhook subscriptions. See {@link WebhooksResource}.
-   *
-   * @since 3.0.0
-   */
-  readonly webhooks: WebhooksResource;
-
   /** The resolved base URL, with any trailing slash removed. */
   readonly baseUrl: string;
 
@@ -83,7 +75,6 @@ export class DemoClient {
       baseDelayMs: options.retry?.baseDelayMs ?? 250,
     };
     this.widgets = new WidgetsResource();
-    this.webhooks = new WebhooksResource();
   }
 
   /**

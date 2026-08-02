@@ -19,8 +19,6 @@
 
 export { DemoClient } from './client.js';
 export { WidgetsResource } from './widgets.js';
-export { WebhooksResource } from './webhooks.js';
 export { DemoError, RateLimitError, NotFoundError } from './errors.js';
 export type { DemoClientOptions, RetryOptions } from './client.js';
 export type { Widget, WidgetStatus, CreateWidgetInput, ListWidgetsOptions, Page } from './types.js';
-export type { WebhookEvent, WebhookSubscription, CreateWebhookInput } from './webhooks.js';
