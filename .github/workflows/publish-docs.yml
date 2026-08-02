@@ -1,0 +1,61 @@
+name: Publish docs
+
+on:
+  # Called by release.yml once a release has succeeded, so documentation is never
+  # published for a version that failed to release.
+  workflow_call:
+  # And available on its own, to republish or to backfill an older version.
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to publish. Leave empty to use .version.'
+        required: false
+        type: string
+
+# Publishing restores the docs branch, adds this version, and replaces the branch.
+# Two overlapping runs would each restore the other's stale tip, and the one that
+# finished second would silently delete the first's version. The group must not
+# include github.ref — a per-ref group would allow exactly that overlap — and
+# cancel-in-progress must stay false, since cancelling mid-publish leaves the
+# branch half-written.
+concurrency:
+  group: gh-pages-deploy
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - id: docs
+        uses: subhankarmaiti/sdk-docs-hub@v1
+        with:
+          # TypeDoc emits relative links, so the root mirror is a copy of the
+          # version output rather than a second build. root-strategy: auto works
+          # this out from the absence of {{base_path}} here.
+          docs-command: npx typedoc --out {{out_dir}}
+          version: ${{ inputs.version }}
+          version-file: .version
+          base-path: sdk-docs-action-demo
+          # The toolbar holds the title, the GitHub link and the search button;
+          # inserting before the links puts the dropdown among them.
+          selector-mount: '#tsd-toolbar-links, .tsd-toolbar-contents, .col-sidebar'
+          selector-position: left
+
+      - name: Summarise
+        run: |
+          echo "Published ${{ steps.docs.outputs.version-tag }}"
+          echo "  available: ${{ steps.docs.outputs.versions-kept }}"
+          echo "  root serves: ${{ steps.docs.outputs.stable }}"
+          echo "  ${{ steps.docs.outputs.version-url }}"

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "entryPoints": ["src/index.ts"],
+  "out": "docs",
+  "name": "SDK Docs Action Demo",
+  "hideGenerator": true,
+
+  // The action decides where the output is served from and what version it is, so
+  // TypeDoc must not: githubPages would add its own .nojekyll and CNAME handling,
+  // and includeVersion would stamp the version into every page title, making the
+  // root mirror read as a specific version rather than "latest".
+  "githubPages": false,
+  "includeVersion": false,
+
+  // Deliberately no @shipgirl/typedoc-plugin-versions: it creates its own
+  // vX.Y.Z/ directories, stable/dev symlinks and versions manifest — all of
+  // which this action owns. Two version managers produce v1.0.0/v1.0.0/ nesting.
+  "navigationLinks": {
+    "GitHub": "https://github.com/subhankarmaiti/sdk-docs-action-demo"
+  }
+}
