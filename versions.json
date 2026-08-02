@@ -1,0 +1,19 @@
+{
+  "stable": "v2.0.1",
+  "versions": [
+    {
+      "name": "v3.0.0-beta.1",
+      "path": "v3.0.0-beta.1",
+      "version": "3.0.0-beta.1"
+    },
+    {
+      "name": "v2.0.1",
+      "path": "v2.0.1",
+      "version": "2.0.1"
+    }
+  ],
+  "ui": {
+    "mount": "#tsd-toolbar-links, .tsd-toolbar-contents, .col-sidebar",
+    "position": "left"
+  }
+}
